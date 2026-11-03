@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Isi Piringku - Game Gizi Seimbang</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            background: #c9f0b4
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            min-height: 100dvh;
+            font-family: 'Fredoka', 'Comic Sans MS', sans-serif;
+            color: #2B2D42;
+            font-size: 18px;
+            background: linear-gradient(#bde7ff, #fff3c4 55%, #c9f0b4);
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        .fl {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0
+        }
+
+        .fl span {
+            position: absolute;
+            top: -60px;
+            font-size: 2.2rem;
+            opacity: .55;
+            animation: jatuh 16s linear infinite
+        }
+
+        @keyframes jatuh {
+            to {
+                transform: translateY(115vh) rotate(360deg)
+            }
+        }
+
+        .wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 880px;
+            margin: auto;
+            padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) 18px max(18px, env(safe-area-inset-left))
+        }
+
+        .wrap.lebar {
+            max-width: 1100px
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 32px;
+            padding: 26px;
+            border: 5px solid var(--c, #FFB703);
+            box-shadow: 0 10px 0 rgba(43, 45, 66, .12)
+        }
+
+        .card.awal {
+            position: relative;
+            padding-top: 46px
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 9vw, 4.2rem);
+            line-height: 1;
+            margin: .2em 0;
+            text-align: center;
+            letter-spacing: 1px
+        }
+
+        h1 b:nth-child(1) {
+            color: #E63946
+        }
+
+        h1 b:nth-child(2) {
+            color: #F77F00
+        }
+
+        h1 b:nth-child(3) {
+            color: #FFB703
+        }
+
+        h1 b:nth-child(4) {
+            color: #2A9D8F
+        }
+
+        h1 b:nth-child(5) {
+            color: #4CC9F0
+        }
+
+        h2 {
+            margin: .2em 0;
+            font-size: 1.7rem
+        }
+
+        .c {
+            text-align: center
+        }
+
+        .btn {
+            display: inline-block;
+            border: 0;
+            border-radius: 99px;
+            padding: 14px 34px;
+            font: inherit;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            background: #FF5D73;
+            box-shadow: 0 6px 0 #c23a4e;
+            cursor: pointer;
+            text-decoration: none;
+            -webkit-appearance: none;
+            touch-action: manipulation
+        }
+
+        .btn:hover {
+            animation: goyang .4s
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #c23a4e
+        }
+
+        .btn.abu {
+            background: #8d99ae;
+            box-shadow: 0 6px 0 #5c677d
+        }
+
+        .btn.kc {
+            padding: 8px 18px;
+            font-size: 1rem;
+            box-shadow: 0 4px 0 #c23a4e
+        }
+
+        .btn.abu.kc {
+            box-shadow: 0 4px 0 #5c677d
+        }
+
+        @keyframes goyang {
+            25% {
+                transform: rotate(-3deg)
+            }
+
+            75% {
+                transform: rotate(3deg)
+            }
+        }
+
+        .btn-adm {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            padding: 4px 12px;
+            border-radius: 99px;
+            background: #f1f3f5;
+            color: #6c757d;
+            font-size: .8rem;
+            font-weight: 600;
+            line-height: 1.4;
+            text-decoration: none
+        }
+
+        .btn-adm:hover,
+        .btn-adm:focus-visible {
+            background: #2B2D42;
+            color: #fff
+        }
+
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            max-width: 380px;
+            padding: 14px 20px;
+            border-radius: 99px;
+            border: 4px solid #4CC9F0;
+            font: inherit;
+            font-size: 1.4rem;
+            text-align: center;
+            outline: none;
+            margin: 14px 0;
+            -webkit-appearance: none
+        }
+
+        input[type=text]:focus,
+        input[type=password]:focus {
+            border-color: #FFB703
+        }
+
+        .ideal {
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            margin: 10px auto;
+            border: 10px solid #fff;
+            box-shadow: 0 0 0 4px #ddd, 0 8px 0 rgba(0, 0, 0, .12);
+            background: conic-gradient(#FFB703 0 33.3%, #2A9D8F 0 66.6%, #E63946 0 83.3%, #F77F00 0)
+        }
+
+        .leg {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            font-size: .95rem;
+            margin: 10px 0
+        }
+
+        .leg i {
+            font-style: normal;
+            padding: 4px 12px;
+            border-radius: 99px;
+            color: #fff;
+            font-weight: 600
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 14px
+        }
+
+        .steps span {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 1.6rem;
+            opacity: .5;
+            border: 4px solid #fff
+        }
+
+        .steps .ok {
+            opacity: 1;
+            background: #c9f0b4
+        }
+
+        .steps .now {
+            opacity: 1;
+            border-color: #FF5D73;
+            transform: scale(1.2)
+        }
+
+        .bubble {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: #fff7d6;
+            border-radius: 24px;
+            padding: 12px 16px;
+            margin-bottom: 12px
+        }
+
+        .bubble .mk {
+            font-size: 3rem;
+            animation: loncat 1.2s ease-in-out infinite
+        }
+
+        @keyframes loncat {
+            50% {
+                transform: translateY(-8px)
+            }
+        }
+
+        .piring {
+            width: 170px;
+            height: 170px;
+            margin: 6px auto 14px;
+            border-radius: 50%;
+            background: #fff;
+            border: 10px solid #e9ecef;
+            box-shadow: inset 0 0 0 6px #f1f3f5, 0 6px 0 rgba(0, 0, 0, .12);
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 8px;
+            font-size: 2rem
+        }
+
+        .piring span {
+            animation: muncul .3s
+        }
+
+        @keyframes muncul {
+            from {
+                transform: scale(0) rotate(-90deg)
+            }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+            gap: 12px
+        }
+
+        .pil {
+            position: relative;
+            cursor: pointer
+        }
+
+        .pil input {
+            position: absolute;
+            opacity: 0
+        }
+
+        .pil div {
+            border: 4px solid #e9ecef;
+            border-radius: 24px;
+            text-align: center;
+            padding: 12px 4px;
+            background: #fff;
+            transition: .2s
+        }
+
+        .pil div b {
+            display: block;
+            font-size: 2.6rem;
+            line-height: 1.2
+        }
+
+        .pil small {
+            color: #6c757d
+        }
+
+        .pil input:checked+div {
+            border-color: var(--c);
+            background: #fffbe8;
+            transform: scale(1.05)
+        }
+
+        .pil input:checked+div::after {
+            content: '✔';
+            position: absolute;
+            top: -8px;
+            right: -4px;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 50%;
+            background: var(--c);
+            color: #fff;
+            font-size: 1rem
+        }
+
+        .pil input:focus-visible+div {
+            outline: 4px solid #2B2D42
+        }
+
+        #info {
+            min-height: 1.5em;
+            color: #E63946;
+            font-weight: 600;
+            text-align: center
+        }
+
+        .aksi {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 14px;
+            flex-wrap: wrap
+        }
+
+        .bt {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 14px 0;
+            border-top: 3px dashed #e9ecef
+        }
+
+        .bt .ik {
+            font-size: 2.4rem
+        }
+
+        .bt>div {
+            flex: 1
+        }
+
+        .chip {
+            display: inline-block;
+            background: #f1f3f5;
+            border-radius: 99px;
+            padding: 3px 12px;
+            margin: 2px;
+            font-size: .95rem
+        }
+
+        .badge {
+            display: inline-block;
+            color: #fff;
+            border-radius: 99px;
+            padding: 2px 14px;
+            font-weight: 700;
+            font-size: .95rem
+        }
+
+        .bintang {
+            font-size: 2.6rem;
+            text-align: center;
+            letter-spacing: 4px
+        }
+
+        .meter {
+            position: relative;
+            height: 26px;
+            border-radius: 99px;
+            margin: 26px 0 8px;
+            background: linear-gradient(90deg, #E63946 0 38.9%, #2A9D8F 38.9% 72.2%, #F77F00 72.2%)
+        }
+
+        .meter i {
+            position: absolute;
+            top: -16px;
+            font-style: normal;
+            font-size: 2rem;
+            transform: translateX(-50%)
+        }
+
+        .tiga {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 12px;
+            margin-top: 10px
+        }
+
+        .tiga div {
+            border-radius: 20px;
+            padding: 14px;
+            color: #fff;
+            font-size: .95rem
+        }
+
+        .atas {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .stat {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin: 12px 0
+        }
+
+        .stat div {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 12px;
+            text-align: center
+        }
+
+        .stat b {
+            display: block;
+            font-size: 1.8rem;
+            line-height: 1.2
+        }
+
+        .stat small {
+            color: #6c757d
+        }
+
+        .tab {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 14px 0 10px
+        }
+
+        .tab a {
+            padding: 6px 16px;
+            border-radius: 99px;
+            background: #f1f3f5;
+            color: #2B2D42;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: .95rem;
+            cursor: pointer
+        }
+
+        .tab a.on {
+            background: #2B2D42;
+            color: #fff
+        }
+
+        .tbw {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch
+        }
+
+        table.tb {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .95rem;
+            min-width: 760px
+        }
+
+        .tb th {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 3px solid #e9ecef;
+            color: #6c757d;
+            font-size: .85rem
+        }
+
+        .tb td {
+            padding: 10px 8px;
+            border-bottom: 2px dashed #e9ecef;
+            vertical-align: middle
+        }
+
+        .tb tr.top td {
+            background: #f1fbf8
+        }
+
+        .tb .rk {
+            font-size: 1.5rem;
+            text-align: center;
+            width: 52px
+        }
+
+        .nil {
+            display: inline-block;
+            min-width: 52px;
+            text-align: center;
+            color: #fff;
+            border-radius: 14px;
+            padding: 4px 8px;
+            font-weight: 700;
+            font-size: 1.2rem
+        }
+
+        .dot {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            border: 3px solid;
+            margin: 1px;
+            font-size: 1.1rem;
+            background: #fff
+        }
+
+        .tb details {
+            font-size: .9rem;
+            margin-top: 4px
+        }
+
+        .tb summary {
+            cursor: pointer;
+            color: #4361ee;
+            font-weight: 600
+        }
+
+        .x {
+            border: 0;
+            background: none;
+            cursor: pointer;
+            font-size: 1.3rem
+        }
+
+        .cat {
+            color: #6c757d;
+            font-size: .9rem;
+            margin: 12px 0 0
+        }
+
+        .warn {
+            background: #fff3cd;
+            border-radius: 16px;
+            padding: 10px 14px;
+            margin: 12px 0;
+            font-size: .9rem
+        }
+
+        .foot {
+            text-align: center;
+            font-weight: 600;
+            padding: 24px 0 max(22px, env(safe-area-inset-bottom))
+        }
+
+        @media(hover:none) {
+            .btn:hover {
+                animation: none
+            }
+        }
+
+        @media(max-width:600px) {
+            body {
+                font-size: 16px
+            }
+
+            .wrap {
+                padding-left: max(12px, env(safe-area-inset-left));
+                padding-right: max(12px, env(safe-area-inset-right))
+            }
+
+            .card {
+                padding: 18px 14px;
+                border-radius: 26px;
+                border-width: 4px
+            }
+
+            h2 {
+                font-size: 1.35rem
+            }
+
+            .steps {
+                gap: 5px
+            }
+
+            .steps span {
+                width: 42px;
+                height: 42px;
+                font-size: 1.3rem
+            }
+
+            .bubble .mk {
+                font-size: 2.4rem
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px
+            }
+
+            .pil div b {
+                font-size: 2.3rem
+            }
+
+            .piring {
+                width: 140px;
+                height: 140px;
+                font-size: 1.6rem
+            }
+
+            .ideal {
+                width: 160px;
+                height: 160px
+            }
+
+            .aksi {
+                flex-direction: column-reverse;
+                align-items: stretch
+            }
+
+            .aksi .btn {
+                width: 100%;
+                text-align: center
+            }
+
+            .btn {
+                padding: 14px 22px;
+                font-size: 1.15rem
+            }
+
+            .btn.kc {
+                padding: 8px 16px;
+                font-size: 1rem
+            }
+
+            .bt {
+                gap: 10px
+            }
+
+            .bt .ik {
+                font-size: 1.9rem
+            }
+
+            .bintang {
+                font-size: 2.1rem;
+                letter-spacing: 2px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                animation: none !important
+            }
+        }
+
+        @media print {
+
+            .fl,
+            .aksi,
+            .tab,
+            .btn-adm {
+                display: none
+            }
+
+            body {
+                background: #fff
+            }
+
+            .card {
+                box-shadow: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fl" id="fl"></div>
+    <div class="wrap" id="w">
+        <div id="app"></div>
+        <footer class="foot">&copy; 2026 Kholida Istiqomah 💗💖💕</footer>
+    </div>
+    <script>
+        // Data makanan: [id, emoji, nama, kkal per porsi, (1 = manis/tinggi gula)]
+        const G = {
+            pokok: {
+                t: 'Makanan Pokok', e: '🍚', c: '#FFB703', min: 1, max: 1, lim: 3, q: 'Makanan pokok adalah sumber tenaga untuk bermain dan belajar!',
+                m: {kurang: 'Belum ada makanan pokok. Badan bisa lemas dan cepat lapar.', normal: 'Pas sekali! Tenagamu cukup untuk bermain dan belajar.', lebih: 'Terlalu banyak makanan pokok. Tenaga berlebih bisa berubah jadi lemak.'},
+                i: [['nasi', '🍚', 'Nasi', 200], ['kentang', '🥔', 'Kentang', 130], ['jagung', '🌽', 'Jagung', 120], ['roti', '🍞', 'Roti Gandum', 140], ['ubi', '🍠', 'Ubi', 150], ['mi', '🍜', 'Mi', 220]]
+            },
+            lauk: {
+                t: 'Lauk Pauk', e: '🍗', c: '#E63946', min: 1, max: 2, lim: 3, q: 'Lauk pauk membuat otot dan otakmu tumbuh kuat. Pilih yang kamu suka!',
+                m: {kurang: 'Belum ada lauk. Tubuh butuh protein agar tumbuh tinggi dan kuat.', normal: 'Hebat! Protein membuat tubuhmu tumbuh kuat dan pintar.', lebih: 'Lauk terlalu banyak. Protein berlebih membebani ginjal dan membuat perut penuh.'},
+                i: [['telur', '🥚', 'Telur', 80], ['ayam', '🍗', 'Ayam', 165], ['ikan', '🐟', 'Ikan', 130], ['tempe', '🫘', 'Tempe', 110], ['tahu', '🟨', 'Tahu', 80], ['daging', '🥩', 'Daging Sapi', 150]]
+            },
+            sayur: {
+                t: 'Sayuran', e: '🥦', c: '#2A9D8F', min: 1, max: 2, lim: 3, q: 'Sayuran penuh vitamin dan serat. Isi sepertiga piringmu dengan warna hijau!',
+                m: {kurang: 'Belum ada sayur. Tubuh kekurangan vitamin dan serat, perut bisa susah buang air besar.', normal: 'Keren! Sayur membuat tubuh sehat dan pencernaan lancar.', lebih: 'Sayurmu banyak sekali! Sehat, tapi jangan sampai perutmu penuh sebelum makan yang lain.'},
+                i: [['bayam', '🥬', 'Bayam', 25], ['wortel', '🥕', 'Wortel', 40], ['brokoli', '🥦', 'Brokoli', 35], ['tomat', '🍅', 'Tomat', 20], ['timun', '🥒', 'Timun', 15], ['buncis', '🫛', 'Buncis', 30]]
+            },
+            buah: {
+                t: 'Buah-buahan', e: '🍎', c: '#F77F00', min: 1, max: 1, lim: 3, q: 'Buah rasanya manis dan segar, dan membuat badanmu tidak mudah sakit!',
+                m: {kurang: 'Belum ada buah. Kamu bisa kurang vitamin C dan mudah sariawan.', normal: 'Segar! Buah memberi vitamin untuk daya tahan tubuhmu.', lebih: 'Buah terlalu banyak. Gula alaminya bisa membuat perut kembung.'},
+                i: [['pisang', '🍌', 'Pisang', 90], ['apel', '🍎', 'Apel', 80], ['jeruk', '🍊', 'Jeruk', 60], ['mangga', '🥭', 'Mangga', 100], ['semangka', '🍉', 'Semangka', 50], ['anggur', '🍇', 'Anggur', 70]]
+            },
+            minum: {
+                t: 'Minuman', e: '💧', c: '#4CC9F0', min: 1, max: 2, lim: 2, q: 'Terakhir, pilih minumanmu. Hati-hati, ada minuman yang terlalu manis!',
+                m: {kurang: 'Belum ada minuman. Jangan lupa minum agar tubuh tidak kekurangan cairan.', normal: 'Segar! Minumanmu menjaga tubuh tetap bugar.', lebih: 'Ada minuman manis di piringmu! Gula berlebih bisa merusak gigi dan membuat gemuk.'},
+                i: [['air', '💧', 'Air Putih', 0], ['susu', '🥛', 'Susu', 120], ['jus', '🧃', 'Jus Buah', 90], ['teh', '🧋', 'Es Teh Manis', 120, 1], ['soda', '🥤', 'Minuman Soda', 150, 1]]
+            }
+        };
+        const LB = {kurang: ['Kurang', '😟', '#E63946'], normal: ['Normal', '😄', '#2A9D8F'], lebih: ['Lebih', '😵', '#F77F00']};
+        const TG = {sesuai: ['Sesuai Target', '#2A9D8F'], hampir: ['Hampir Sesuai', '#F77F00'], belum: ['Belum Sesuai', '#E63946']};
+        const ME = {kurang: 'Energinya masih kurang. Tambahkan makanan bergizi supaya kamu kuat sampai jam pulang sekolah.', normal: 'Energi pas untuk satu kali makan. Badanmu siap beraksi!', lebih: 'Energinya terlalu besar untuk satu kali makan. Kurangi porsi atau pilih yang lebih ringan.'};
+        const keys = Object.keys(G), SANDI_LOKAL = 'bayulida123';
+        const $ = s => document.querySelector(s), A = $('#app'), W = $('#w');
+        const h = s => String(s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+        const st = (n, a, b) => n < a ? 'kurang' : n > b ? 'lebih' : 'normal';
+        const tg = ok => ok >= 6 ? 'sesuai' : ok >= 4 ? 'hampir' : 'belum';
+        let S = JSON.parse(sessionStorage.ps || '{"pilih":{}}'), cur = 0, DATA = [], LOKAL = 0, F = '';
+        const sv = () => sessionStorage.ps = JSON.stringify(S);
+        $('#fl').innerHTML = ['🍎', '🥕', '🍌', '🥦', '🍚', '🍉', '🥛', '🐟'].map((e, i) => `<span style="left:${i * 13 + 3}%;animation-delay:-${i * 2}s">${e}</span>`).join('');
+
+        // ---------- Penyimpanan: Netlify Function (/api/hasil), cadangan localStorage ----------
+        async function api(m, body, sandi) {
+            try {
+                const r = await fetch('/api/hasil', {method: m, headers: {'content-type': 'application/json', 'x-sandi': sandi || ''}, body: body ? JSON.stringify(body) : undefined});
+                if (!(r.headers.get('content-type') || '').includes('json')) return null;
+                return {s: r.status, d: await r.json()};
+            } catch (e) {return null}
+        }
+        const lok = () => {try {return JSON.parse(localStorage.piring || '[]')} catch (e) {return []} };
+        async function simpan(rec) {
+            const r = await api('POST', rec); if (r && r.s == 200) return 1;
+            try {const d = lok(), i = d.findIndex(x => x.id == rec.id); if (i < 0) d.push(rec); else {rec.waktu = d[i].waktu; d[i] = rec} localStorage.piring = JSON.stringify(d); return 2} catch (e) {return 0}
+        }
+        async function ambil(pw) {
+            const r = await api('GET', 0, pw);
+            if (r) return r.s == 200 ? {d: r.d, lokal: 0} : null;
+            return pw === SANDI_LOKAL ? {d: lok(), lokal: 1} : null;
+        }
+        const urut = (a, b) => (b.nilai - a.nilai) || (Math.abs(a.kkal - 500) - Math.abs(b.kkal - 500)) || (a.waktu - b.waktu);
+        function peringkat(rows) {
+            const best = {}, n = {};
+            rows.forEach(r => {const k = String(r.nama).toLowerCase(); n[k] = (n[k] || 0) + 1; if (!best[k] || urut(r, best[k]) < 0) best[k] = r});
+            return Object.keys(best).map(k => ({...best[k], coba: n[k]})).sort(urut);
+        }
+
+        // ---------- Penilaian ----------
+        function nilai(P) {
+            let tot = 0, ok = 0; const R = {};
+            for (const k of keys) {
+                const g = G[k], its = g.i.filter(x => (P[k] || []).includes(x[0]));
+                its.forEach(x => tot += x[3]);
+                let s = st(its.length, g.min, g.max);
+                if (k == 'minum' && its.some(x => x[4])) s = 'lebih';
+                if (s == 'normal') ok++;
+                R[k] = [its, s];
+            }
+            const se = st(tot, 350, 650); if (se == 'normal') ok++;
+            const b = Math.max(1, Math.round(ok / 6 * 5));
+            return {R, tot, ok, se, b, n: Math.round(ok / 6 * 100), j: b >= 5 ? 'Juara Gizi Seimbang! 🏆' : b >= 3 ? 'Bagus, hampir sempurna! 🌟' : 'Ayo coba susun lagi! 💪'};
+        }
+
+        // ---------- Navigasi ----------
+        function go(v) {
+            cur = v; W.classList.toggle('lebar', v == 'admin'); scrollTo(0, 0);
+            if (v == 'admin') return admin();
+            if (!S.nama || v <= 0) return awal();
+            v <= keys.length ? pilih(v) : hasil();
+        }
+        function awal() {
+            A.innerHTML = `<div class="card c awal"><a class="btn-adm" href="#admin" onclick="go('admin');return false" title="Masuk admin">🔐 Admin</a>
+ <h1><b>ISI</b> <b>PIRING</b><b>KU</b></h1><p style="margin:0">🎮 Game gizi seimbang untuk anak hebat! 🎮</p>
+ <div class="ideal"></div>
+ <div class="leg"><i style="background:#FFB703">1/3 Pokok</i><i style="background:#2A9D8F">1/3 Sayur</i><i style="background:#E63946">1/6 Lauk</i><i style="background:#F77F00">1/6 Buah</i></div>
+ <form onsubmit="return mulai(event)"><p style="margin:10px 0 0"><b>Halo teman! Siapa namamu?</b></p>
+ <input type="text" id="nm" maxlength="20" placeholder="Ketik namamu di sini" value="${h(S.nama || '')}" required autofocus>
+ <div id="info"></div><div><button class="btn">Mulai Main 🚀</button></div></form></div>`;
+        }
+        function mulai(e) {
+            e.preventDefault();
+            const n = $('#nm').value.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, 20);
+            if (!n) {$('#info').textContent = 'Isi namamu dulu ya, supaya kita bisa mulai!'; return false}
+            S = {nama: n, pilih: {}, rid: null}; sv(); go(1); return false;
+        }
+        function pilih(l) {
+            const k = keys[l - 1], g = G[k], sel = S.pilih[k] || [];
+            A.innerHTML = `<div class="steps">${keys.map((x, i) => `<span class="${i + 1 < l ? 'ok' : i + 1 == l ? 'now' : ''}">${G[x].e}</span>`).join('')}</div>
+ <div class="card" style="--c:${g.c}"><div class="bubble"><span class="mk">🧑‍🍳</span><div>Halo <b>${h(S.nama)}</b>! ${h(g.q)}</div></div>
+ <h2 class="c">${g.e} Pilih ${h(g.t)}</h2><p class="c" style="margin:0;color:#6c757d">Pilih maksimal ${g.lim} ya. Piringmu akan terisi di bawah ini!</p>
+ <form onsubmit="return kirim(event,${l})"><div class="piring" id="pr" aria-live="polite"></div><div id="info"></div>
+ <div class="grid">${g.i.map(it => `<label class="pil"><input type="checkbox" value="${it[0]}" data-e="${it[1]}" ${sel.includes(it[0]) ? 'checked' : ''} onchange="cek(this,${g.lim})"><div><b>${it[1]}</b>${h(it[2])}<br><small>${it[3]} kkal</small></div></label>`).join('')}</div>
+ <div class="aksi"><button type="button" class="btn abu" onclick="go(${l - 1})">⬅ Kembali</button><button class="btn">${l == keys.length ? 'Lihat Hasilku 🎉' : 'Lanjut ➡'}</button></div></form></div>`;
+            upd();
+        }
+        function upd() {$('#pr').innerHTML = [...A.querySelectorAll('.pil input:checked')].map(b => `<span>${b.dataset.e}</span>`).join('')}
+        function cek(b, lim) {
+            const over = A.querySelectorAll('.pil input:checked').length > lim;
+            if (over) b.checked = false;
+            $('#info').textContent = over ? `Maksimal ${lim} pilihan ya!` : ''; upd();
+        }
+        function kirim(e, l) {
+            e.preventDefault(); const k = keys[l - 1];
+            S.pilih[k] = [...A.querySelectorAll('.pil input:checked')].map(x => x.value).slice(0, G[k].lim);
+            sv(); go(l + 1); return false;
+        }
+        function hasil() {
+            const {R, tot, ok, se, b, n, j} = nilai(S.pilih), pos = Math.min(100, tot / 900 * 100);
+            A.innerHTML = `<div class="card" style="--c:#FF5D73"><h2 class="c" style="font-size:2rem">Hore, ${h(S.nama)}! 🎉</h2>
+ <div class="bintang">${'⭐'.repeat(b) + '☆'.repeat(5 - b)}</div>
+ <p class="c" style="font-size:1.4rem;font-weight:700;margin:0">${j}</p>
+ <p class="c" style="margin:4px 0 0;color:#6c757d">Kamu mendapat ${ok} dari 6 penilaian normal. Nilai gizimu: <b>${n}</b></p>
+ <p class="c" id="kirim" style="margin:4px 0 0;color:#2A9D8F;font-weight:600"></p>
+ <h2 style="margin-top:20px">🍽️ Isi Piringmu</h2>
+ ${keys.map(k => {
+                const g = G[k], [its, s] = R[k]; return `<div class="bt"><div class="ik">${g.e}</div><div><b>${h(g.t)}</b> <span class="badge" style="background:${LB[s][2]}">${LB[s][1]} ${LB[s][0]}</span><br>
+ ${its.length ? its.map(x => `<span class="chip">${x[1]} ${h(x[2])} (${x[3]} kkal)</span>`).join('') : '<span class="chip">Belum memilih</span>'}<div style="margin-top:4px">${h(g.m[s])}</div></div></div>`
+            }).join('')}
+ <h2 style="margin-top:20px">⚡ Total Energi: ${tot} kkal <span class="badge" style="background:${LB[se][2]}">${LB[se][1]} ${LB[se][0]}</span></h2>
+ <div class="meter"><i style="left:${pos}%">📍</i></div>
+ <div style="display:flex;justify-content:space-between;font-size:.85rem;color:#6c757d"><span>0</span><span>350</span><span>650</span><span>900+ kkal</span></div>
+ <p>${h(ME[se])}</p>
+ <h2 style="margin-top:20px">📖 Apa arti Kurang, Normal, Lebih?</h2>
+ <div class="tiga"><div style="background:#E63946"><b>😟 Kurang</b><br>Zat gizi yang kamu pilih belum cukup. Tubuh bisa lemas, mudah sakit, dan sulit tumbuh optimal. Tambahkan pilihan dari kelompok itu.</div>
+ <div style="background:#2A9D8F"><b>😄 Normal</b><br>Pas dan seimbang! Jumlahnya sesuai kebutuhan anak, sehingga tubuh kuat, sehat, dan siap belajar.</div>
+ <div style="background:#F77F00"><b>😵 Lebih</b><br>Terlalu banyak untuk satu kali makan. Bisa membuat kegemukan, perut penuh, atau gigi bermasalah (jika terlalu manis). Kurangi porsinya.</div></div>
+ <h2 style="margin-top:20px">🍽️ Piring Ideal Isi Piringku</h2><div class="ideal"></div>
+ <div class="leg"><i style="background:#FFB703">1/3 Makanan Pokok</i><i style="background:#2A9D8F">1/3 Sayur</i><i style="background:#E63946">1/6 Lauk Pauk</i><i style="background:#F77F00">1/6 Buah</i></div>
+ <p class="c" style="margin:0">Jangan lupa minum air putih, cuci tangan, dan aktif bergerak ya!</p>
+ <div class="aksi" style="justify-content:center"><button class="btn" onclick="S={pilih:{}};sv();go(0)">🔄 Main Lagi</button><button class="btn abu" onclick="print()">⬇️ Download PDF</button></div></div>`;
+            if (Object.keys(S.pilih).length < keys.length) return;
+            S.rid = S.rid || (Math.random().toString(36) + '00000000').slice(2, 12); sv();
+            const rec = {id: S.rid, nama: S.nama, waktu: Date.now(), ok, nilai: n, kkal: tot, se, s: {}, p: {}};
+            keys.forEach(k => {rec.s[k] = R[k][1]; rec.p[k] = R[k][0].map(x => x[1] + ' ' + x[2])});
+            simpan(rec).then(r => {const el = $('#kirim'); if (el) el.textContent = r == 1 ? '📨 Hasilmu sudah terkirim ke guru!' : r == 2 ? '💾 Hasilmu tersimpan di perangkat ini.' : ''});
+        }
+
+        // ---------- Admin ----------
+        function login(gagal) {
+            A.innerHTML = `<div class="card c" style="--c:#4CC9F0;max-width:460px;margin:30px auto"><h2>🔐 Masuk Admin</h2>
+ <p style="margin:0;color:#6c757d">Khusus guru untuk melihat peringkat gizi siswa.</p>
+ <form onsubmit="return masuk(event)"><input type="password" id="pw" placeholder="Sandi admin" required autofocus>${gagal ? '<div id="info">Sandi salah, coba lagi ya.</div>' : ''}
+ <div><button class="btn">Masuk</button></div></form><p style="margin:16px 0 0"><a href="#" onclick="go(0);return false">⬅ Kembali ke game</a></p></div>`;
+        }
+        function masuk(e) {e.preventDefault(); sessionStorage.pw = $('#pw').value; dash(); return false}
+        function admin() {sessionStorage.pw ? dash() : login()}
+        async function dash() {
+            const r = await ambil(sessionStorage.pw || '');
+            if (cur != 'admin') return;
+            if (!r) {sessionStorage.removeItem('pw'); return login(1)}
+            DATA = peringkat(r.d); LOKAL = r.lokal; draw();
+        }
+        function draw() {
+            const nS = DATA.length, cn = {sesuai: 0, hampir: 0, belum: 0}, pk = {}; keys.forEach(k => pk[k] = 0); let sum = 0, pe = 0;
+            DATA.forEach(r => {sum += r.nilai; cn[tg(r.ok)]++; if (r.se == 'normal') pe++; keys.forEach(k => {if (r.s[k] == 'normal') pk[k]++})});
+            const pc = x => nS ? Math.round(x / nS * 100) : 0;
+            const tabs = [['', 'Semua', nS], ['sesuai', 'Sesuai Target', cn.sesuai], ['hampir', 'Hampir Sesuai', cn.hampir], ['belum', 'Belum Sesuai', cn.belum]];
+            const rows = DATA.map((r, i) => [r, i, tg(r.ok)]).filter(x => !F || x[2] == F).map(([r, i, t]) => `<tr class="${t == 'sesuai' ? 'top' : ''}">
+ <td class="rk">${i < 3 ? ['🥇', '🥈', '🥉'][i] : i + 1}</td>
+ <td><b>${h(r.nama)}</b>${r.coba > 1 ? `<br><small style="color:#6c757d">terbaik dari ${r.coba} percobaan</small>` : ''}</td>
+ <td><span class="nil" style="background:${TG[t][1]}">${r.nilai}</span></td>
+ <td><span class="badge" style="background:${TG[t][1]}">${TG[t][0]}</span><br><small>${r.ok} dari 6 normal</small></td>
+ <td>${r.kkal} kkal<br><span class="badge" style="background:${LB[r.se][2]}">${LB[r.se][1]} ${LB[r.se][0]}</span></td>
+ <td>${keys.map(k => `<span class="dot" style="border-color:${LB[r.s[k]][2]}" title="${h(G[k].t)}: ${LB[r.s[k]][0]}">${G[k].e}</span>`).join('')}
+ <details><summary>Rincian</summary>${keys.map(k => `<div><b>${h(G[k].t)}:</b> ${h((r.p[k] || []).join(', ') || 'Belum memilih')} <span class="badge" style="background:${LB[r.s[k]][2]};padding:0 8px;font-size:.8rem">${LB[r.s[k]][0]}</span></div>`).join('')}</details></td>
+ <td><small>${new Date(r.waktu).toLocaleString('id-ID', {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'})}</small></td>
+ <td><button class="x" title="Hapus data siswa ini" data-n="${h(String(r.nama).toLowerCase())}" onclick="hapus(this.dataset.n)">🗑️</button></td></tr>`).join('');
+            A.innerHTML = `<div class="card" style="--c:#4CC9F0"><div class="atas"><h2>📊 Peringkat Gizi Siswa</h2>
+ <div><button class="btn kc" onclick="dash()">🔄 Segarkan</button> <button class="btn abu kc" onclick="csv()">⬇ CSV</button> <button class="btn abu kc" onclick="sessionStorage.removeItem('pw');go(0)">Keluar</button></div></div>
+ ${LOKAL ? '<div class="warn">⚠️ <b>Mode lokal:</b> fungsi penyimpanan Netlify belum aktif, jadi hanya hasil yang dimainkan di perangkat ini yang tampil. Deploy lewat GitHub atau Netlify CLI agar hasil dari semua perangkat siswa terkumpul.</div>' : ''}
+ <div class="stat"><div><b>${nS}</b><small>Siswa mengisi</small></div><div><b style="color:#2A9D8F">${cn.sesuai}</b><small>Sesuai target</small></div><div><b style="color:#F77F00">${cn.hampir}</b><small>Hampir sesuai</small></div><div><b style="color:#E63946">${cn.belum}</b><small>Belum sesuai</small></div><div><b>${nS ? Math.round(sum / nS) : 0}</b><small>Rata-rata nilai</small></div></div>
+ <b>Persen siswa yang Normal di tiap penilaian</b>
+ <div class="stat">${keys.map(k => `<div><b>${G[k].e} ${pc(pk[k])}%</b><small>${h(G[k].t)}</small></div>`).join('')}<div><b>⚡ ${pc(pe)}%</b><small>Energi</small></div></div>
+ <div class="tab">${tabs.map(t => `<a class="${F == t[0] ? 'on' : ''}" onclick="F='${t[0]}';draw()">${t[1]} (${t[2]})</a>`).join('')}</div>
+ <div class="tbw"><table class="tb"><tr><th>#</th><th>Nama</th><th>Nilai</th><th>Status</th><th>Energi</th><th>Pokok, Lauk, Sayur, Buah, Minum</th><th>Waktu</th><th></th></tr>
+ ${rows || `<tr><td colspan="8" class="c" style="padding:30px;color:#6c757d">${nS ? 'Tidak ada siswa pada kelompok ini.' : 'Belum ada siswa yang menyelesaikan game. Hasil akan muncul di sini otomatis.'}</td></tr>`}</table></div>
+ <p class="cat">🎯 <b>Target:</b> keenam penilaian (Makanan Pokok, Lauk Pauk, Sayuran, Buah, Minuman, dan Energi 350 sampai 650 kkal) berstatus Normal, yaitu nilai 100. Nilai = jumlah penilaian Normal dibagi 6 dikali 100. Hampir sesuai = 4 atau 5 Normal.</p>
+ <p class="cat">🏅 <b>Urutan peringkat:</b> nilai tertinggi, lalu energi yang paling dekat 500 kkal, lalu yang paling cepat selesai. Jika satu siswa main berkali-kali, yang dihitung hasil terbaiknya. Halaman menyegarkan diri tiap 30 detik (terakhir: ${new Date().toLocaleTimeString('id-ID')}).</p>
+ <div class="c" style="margin-top:14px"><button class="btn abu kc" onclick="kosong()">🗑️ Kosongkan semua data</button></div></div>`;
+        }
+        async function hapus(n) {
+            if (!confirm('Hapus data ' + n + '?')) return;
+            if (LOKAL) localStorage.piring = JSON.stringify(lok().filter(r => String(r.nama).toLowerCase() != n));
+            else await api('DELETE', {n}, sessionStorage.pw);
+            dash();
+        }
+        async function kosong() {
+            if (!confirm('Hapus SEMUA data siswa? Tindakan ini tidak bisa dibatalkan.')) return;
+            if (LOKAL) localStorage.removeItem('piring'); else await api('DELETE', {all: true}, sessionStorage.pw);
+            dash();
+        }
+        function csv() {
+            const q = v => '"' + String(/^[=+\-@]/.test(v) ? "'" + v : v).replace(/"/g, '""') + '"';
+            const L = [['Peringkat', 'Nama', 'Nilai', 'Status Target', 'Jumlah Normal (dari 6)', 'Total kkal', 'Energi', ...keys.map(k => G[k].t), 'Jumlah Percobaan', 'Waktu']];
+            DATA.forEach((r, i) => L.push([i + 1, r.nama, r.nilai, TG[tg(r.ok)][0], r.ok, r.kkal, LB[r.se][0], ...keys.map(k => LB[r.s[k]][0]), r.coba, new Date(r.waktu).toLocaleString('id-ID')]));
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob(['\ufeff' + L.map(r => r.map(q).join(',')).join('\r\n')], {type: 'text/csv;charset=utf-8'}));
+            a.download = 'peringkat-isi-piringku.csv'; a.click();
+        }
+        setInterval(() => {if (cur == 'admin' && sessionStorage.pw && !document.querySelector('details[open]')) dash()}, 30000);
+        location.hash == '#admin' ? go('admin') : go(0);
+    </script>
+</body>
+
+</html>
